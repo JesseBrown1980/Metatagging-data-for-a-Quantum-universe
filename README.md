@@ -1,9 +1,7 @@
 # Metatagging Data for a Quantum Universe
 
 
-
 ![Quantum Universe Banner](entangled.png)
-
 
 This repository explores metadata-driven frameworks for conceptualizing and interacting with quantum phenomena. Drawing inspiration from both classical 3D vector space tagging and advanced quantum theories, this project aims to bridge the gap between physics, computation, and metadata engineering.
 
@@ -19,6 +17,18 @@ This repository explores metadata-driven frameworks for conceptualizing and inte
 
 - **Unified Theoretical Approach**
   Combine principles of quantum mechanics, general relativity, and computational tagging to simulate a metadata-driven universe.
+
+---
+
+#### 🌌 Expansion of the 3D Vector Space
+
+The 3D vector space expansion framework allows for a detailed and scalable representation of quantum phenomena. This includes:
+
+- **Planck-Scale Representation**: The vector space is divided into units at the Planck scale to capture the smallest physical details of quantum entities.
+- **Temporal and Interaction-Driven Expansion**: The vector space evolves dynamically in response to changes in quantum states and interactions over time.
+- **Mathematical Modeling**: Employ linear algebra techniques and metadata encoding to represent quantum phenomena computationally.
+
+For more information, refer to the detailed documentation in [3D Vector Space Expansion](3d_vectorspace_expansion.md).
 
 ---
 
@@ -82,6 +92,7 @@ This repository explores metadata-driven frameworks for conceptualizing and inte
 - Define a metadata structure for particles and objects in quantum space.
 - Investigate the feasibility of using Planck-scale metadata grids.
 - Simulate the universe as a metadata-driven computational system.
+- Expand the 3D vector space to accommodate dynamic quantum phenomena, as outlined in [3D Vector Space Expansion](3d_vectorspace_expansion.md).
 
 ---
 
@@ -107,6 +118,8 @@ This repository explores metadata-driven frameworks for conceptualizing and inte
 #### 🤝 Contributing
 
 Contributions are welcome! Please fork the repository, make your changes, and submit a pull request.
+
+For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
