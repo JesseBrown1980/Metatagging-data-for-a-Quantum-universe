@@ -1,6 +1,5 @@
 # Metatagging Data for a Quantum Universe
 
-
 ![Quantum Universe Banner](entangled.png)
 
 This repository explores metadata-driven frameworks for conceptualizing and interacting with quantum phenomena. Drawing inspiration from both classical 3D vector space tagging and advanced quantum theories, this project aims to bridge the gap between physics, computation, and metadata engineering.
@@ -108,9 +107,14 @@ For more information, refer to the detailed documentation in [3D Vector Space Ex
   pip install -r requirements.txt
   ```
 
-- **Run the Examples**
+- **Run the Example Simulation**
   ```bash
   python example_simulation.py
+  ```
+
+- **Run the Quantum Vector Space Expansion Example**
+  ```bash
+  python quantum_vector_space.py
   ```
 
 ---
@@ -126,4 +130,3 @@ For major changes, please open an issue first to discuss what you would like to 
 #### 📄 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
