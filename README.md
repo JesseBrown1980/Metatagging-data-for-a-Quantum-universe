@@ -2,7 +2,8 @@
 
 
 
-### Quantum Universe Banner
+![Quantum Universe Banner](entangled.png)
+
 
 This repository explores metadata-driven frameworks for conceptualizing and interacting with quantum phenomena. Drawing inspiration from both classical 3D vector space tagging and advanced quantum theories, this project aims to bridge the gap between physics, computation, and metadata engineering.
 
