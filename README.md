@@ -119,6 +119,16 @@ For more information, refer to the detailed documentation in [3D Vector Space Ex
 
 ---
 
+#### 🔭 Downstream realization (2026-07-01)
+
+This repository is the physics grounding (frame-based discrete universe, spacetime pixels, metatag-driven expansion) for the downstream Asolaria/Q-PRISM work; three notes close the loop back:
+
+- **Temporal/interaction-driven expansion → per-slice address injection.** `bh_inject_between(a,b)` (Q-PRISM `d523819`) deepens one slice of a 1024-ary Brown–Hilbert address so the gap multiplies by 1024 — a strictly-between addressable midpoint always exists, exactly the entangled **P1–P2** midpoint-vector mechanism in [3D Vector Space Expansion](3d_vectorspace_expansion.md). Expansion is addressing capacity; materializing an expanded slice stays operator-gated (E=0) — the running state is UNVERIFIED until cranked.
+- **Spacetime pixels → `pixels_first`.** This repo's Planck-scale grid is the origin of the downstream `pixels_first` convention (CANON).
+- **Metatags re-relate with 0 loss.** Downstream level transcodes are bijections (`H(f(X)) = H(X)`; no compression below entropy is ever claimed). MEASURED for the 256↔1024 rung only (Q-PRISM `53023b6`: 5 bytes ⇄ 4 symbols at lcm(8,10)=40 bits, sha256-identical round-trip); the wider 43+ level ladder is CANON frame, and unproven rungs stay UNVERIFIED.
+
+---
+
 #### 🤝 Contributing
 
 Contributions are welcome! Please fork the repository, make your changes, and submit a pull request.
