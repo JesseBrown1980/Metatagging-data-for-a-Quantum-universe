@@ -129,6 +129,28 @@ This repository is the physics grounding (frame-based discrete universe, spaceti
 
 ---
 
+#### 🧭 v3 orientation layer (2026-07-14)
+
+The single `Spin` of the 2024 particle grew into a full **8-view C₂³ orientation orbit** — the
+metatag's 6-pyramid cube seen at its 8 vertices — with `R·N·Q` (three scales of byte reversal) as
+the **antiparticle** black↔white flip. Here "orbit", "vertices", and "antiparticle" name **encoding
+orientations of the metatag's bytes** — not physical spin/antiparticle states. Two downstream
+results, **`MEASURED_REPO` on text corpora (not physical particle measurements)**, ground it:
+
+- **Isotropy at depth.** Training all 8 orientation languages to full depth, per-view learned
+  densities converge to **≈±0.26%** (from ≈42.5% at shallow depth) — a measured computational analog
+  of *"expands equally into every pyramid, balancing out."* Equal density ≠ identical law (a
+  decoded-law gate stays open).
+- **The Omega bit.** A Merkle-style commitment over sector PIDs (`omega_commitment`) names the
+  seven-node center (6 apex + 1 Ω); it commits causally-available state only and is **not an oracle**.
+
+Full ledger and boundaries in
+[Particle orientation orbit + Omega](PARTICLE-ORBIT-AND-OMEGA-2026-07-14.md); new code in
+`metatag_v2_behcs.py` (`orientation_orbit()`, `antiparticle()`, `omega_commitment()`), all
+pure/E=0 and group-gated per particle state.
+
+---
+
 #### 🤝 Contributing
 
 Contributions are welcome! Please fork the repository, make your changes, and submit a pull request.
