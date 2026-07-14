@@ -1,0 +1,8 @@
+V3HDR|run=METATAG-V3-ORBIT-OMEGA-20260714|date=2026-07-14|seat=LIRIS|layer=particle_orientation_orbit_plus_omega|doctrine=TRILATERAL-PHYSICS-AND-COMPUTATION-EVIDENCE|json=0
+V3CODE|file=metatag_v2_behcs.py|sha256=886b96d8d9a9f82cd22f607f970d7e2bee53c74488ecf3a1582c6e45d7fc616a|added=orientation_orbit,antiparticle,omega_commitment|group=C2^3|gates=squares,commutators,RNQ_total_reversal|distinctness=reported_not_asserted|claim=MEASURED_REPO|json=0
+V3DOC|file=PARTICLE-ORBIT-AND-OMEGA-2026-07-14.md|sha256=2dc1057cd7274341381dad98b86c4c9c403e741d114ea63fddfe6e4f38c8d794|json=0
+V3MEASURED|isotropy_800pass_half_range_pct=0.26|isotropy_100pass_spread_pct=42.5|wide_isotropy_partial_pct=0.19|wide_vs_mid_density_delta_pct=18|source_run=github_29339920613|source_omega=537dc90bb173883e7fed15e51bf1b5199bc2f295da55f5723cea9b080123d444|isotropy_run_complete=8of8_views|wide_run_partial=4of8_views|tier=MEASURED_REPO_text_not_physical|json=0
+V3ORBIT|antiparticle_view=nqr|antiparticle_pid=AGT-ac069560ab8bf552|relation=total_bit_reversal_black_white_flip|reversible=1|shared_key=source_state_sha256|json=0
+V3OMEGA|epoch=0|method=sha256_over_sorted_pids_LF|omega=60c52ffc66d21ae13e085c5dc6fd73037d9c2890027d12ad9f8405a217e3bcba|is_oracle=0|seeds_next_epoch=1|json=0
+V3BOUNDARY|physical_particle=UNVERIFIED|planck_cell=UNVERIFIED|quantum_network=UNVERIFIED|no_inflate_gate=HONORED|json=0
+V3END|run=METATAG-V3-ORBIT-OMEGA-20260714|state=LIRIS_AUTHORED_AWAIT_ACER_RELIC_VERIFY|json=0
