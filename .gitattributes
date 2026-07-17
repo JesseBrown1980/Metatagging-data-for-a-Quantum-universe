@@ -1,0 +1,5 @@
+.gitattributes text eol=lf
+AGENTS.md text eol=lf
+TRILATERAL-PHYSICS-AND-COMPUTATION-EVIDENCE-2026-07-11.md text eol=lf
+.github/workflows/*.yml text eol=lf
+trilateral/quantum_cloning_real_hardware_law_v1/** text eol=lf

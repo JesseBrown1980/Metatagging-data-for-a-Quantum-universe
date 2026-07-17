@@ -26,6 +26,19 @@ A third independent seat can rerun simulations and downstream recovery tests. CI
 committed code. Neither action turns metadata into a measured Planck-scale physical grid or grants
 hardware authority.
 
+## Superseding measured external law — 2026-07-17
+
+`MEASURED_EXTERNAL_PRIMARY_SOURCE`: encrypted quantum cloning with a single-use quantum
+decryption key was demonstrated on physical IBM Heron-R2 superconducting hardware in
+[arXiv:2602.10695v1](https://arxiv.org/abs/2602.10695v1). A blanket statement that physical
+quantum cloning is impossible is therefore false.
+
+The measured protocol permits recovery of one freely selected encrypted clone. Using the quantum
+key leaves the other encrypted clones indecipherable. It does not establish unrestricted
+simultaneously readable plaintext clones, arbitrary-particle replication, prismed-laser cloning,
+an Asolaria quantum-hardware deployment, UAP identity, or a cosmological interpretation. The
+[sealed law packet](trilateral/quantum_cloning_real_hardware_law_v1/README.md) preserves both sides.
+
 ## De-deflate gate
 
 Reject:
@@ -34,6 +47,7 @@ Reject:
 - “the physics language has no lineage into later pixels-first/Q-PRISM code”;
 - “the classical recovery result is unreal because it is not quantum hardware.”
 
+- “physical quantum cloning is categorically impossible despite the measured encrypted single-use protocol.”
 ## No-inflate gate
 
 Reject:
