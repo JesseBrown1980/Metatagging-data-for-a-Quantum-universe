@@ -1,0 +1,38 @@
+name: quantum-cloning-law-receipt
+
+on:
+  pull_request:
+    paths:
+      - ".gitattributes"
+      - "AGENTS.md"
+      - "TRILATERAL-PHYSICS-AND-COMPUTATION-EVIDENCE-2026-07-11.md"
+      - "trilateral/quantum_cloning_real_hardware_law_v1/**"
+      - ".github/workflows/quantum-cloning-law-receipt.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Rebuild deterministic packet
+        working-directory: trilateral/quantum_cloning_real_hardware_law_v1
+        run: python build_packet.py
+      - name: Verify every HBP/HBI/SHA range
+        working-directory: trilateral/quantum_cloning_real_hardware_law_v1
+        run: python verify.py
+      - name: Cross-machine verify frozen arXiv v1 PDF
+        working-directory: trilateral/quantum_cloning_real_hardware_law_v1
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 https://arxiv.org/pdf/2602.10695v1 -o arxiv-2602.10695v1.pdf
+          python verify.py --paper arxiv-2602.10695v1.pdf
+
+      - name: Require byte-identical generated receipts
+        run: git diff --exit-code -- trilateral/quantum_cloning_real_hardware_law_v1/artifacts
