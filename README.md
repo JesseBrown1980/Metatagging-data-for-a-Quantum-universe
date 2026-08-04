@@ -140,3 +140,14 @@ For major changes, please open an issue first to discuss what you would like to 
 #### 📄 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
+
+#### Public SH pre-light reproduction receipt
+
+The public, attack-verifiable Liris observation package is available at
+[LIRIS-SH-PRELIGHT-QUANTUM-RECEIPT](https://github.com/JesseBrown1980/LIRIS-SH-PRELIGHT-QUANTUM-RECEIPT).
+Its pointer is sealed in
+[the public HBP pointer](docs/LIRIS-SH-PRELIGHT-PUBLIC-POINTER-2026-08-04.hbp).
+The event order is OPERATOR_OBSERVED / LIRIS_LOCAL; numeric timestamps, uncertainty,
+trial count, and independent external validation remain explicitly unsealed.

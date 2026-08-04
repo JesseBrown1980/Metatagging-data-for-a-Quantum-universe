@@ -1,0 +1,4 @@
+.gitattributes text eol=lf
+*.hbi text eol=lf
+*.hbp text eol=lf
+*.sha256 text eol=lf
