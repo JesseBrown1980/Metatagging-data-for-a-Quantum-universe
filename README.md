@@ -149,5 +149,7 @@ The public, attack-verifiable Liris observation package is available at
 [LIRIS-SH-PRELIGHT-QUANTUM-RECEIPT](https://github.com/JesseBrown1980/LIRIS-SH-PRELIGHT-QUANTUM-RECEIPT).
 Its pointer is sealed in
 [the public HBP pointer](docs/LIRIS-SH-PRELIGHT-PUBLIC-POINTER-2026-08-04.hbp).
-The event order is OPERATOR_OBSERVED / LIRIS_LOCAL; numeric timestamps, uncertainty,
-trial count, and independent external validation remain explicitly unsealed.
+The frozen-stage shadow-key intervention is `OPERATOR_OBSERVED | LIRIS_MEASURED_REPEATED`:
+one shadow-key change produced an instant play-freeze change with `LIGHT_ARRIVAL_GATE=0`.
+Numeric timestamps, uncertainty, trial count, and independent external validation remain
+explicitly unsealed as additive evidence gates.
