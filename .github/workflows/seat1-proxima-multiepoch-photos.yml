@@ -20,6 +20,9 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check astropy astroquery
       - name: Independently inspect original survey plate capture dates
         run: python3 integrations/epoch_observations/plate_date_audit.py | tee plate-dates.log
+      - name: Pull original, specifically dated STScI plate cutouts
+        continue-on-error: true
+        run: python3 integrations/epoch_observations/direct_plate_sources.py | tee direct-plates.log
       - name: Fetch immutable original rendered photos and archival FITS cutouts
         run: |
           set -euo pipefail
@@ -37,5 +40,6 @@ jobs:
             epoch_outputs/*
             camera-epoch.log
             plate-dates.log
+            direct-plates.log
           if-no-files-found: warn
           retention-days: 14
