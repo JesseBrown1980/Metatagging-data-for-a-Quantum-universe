@@ -321,6 +321,34 @@ mod tests {
         assert_eq!(get_number(b"  -3.41 "),Ok(-3410));
         assert_eq!(get_number(b"1634.731"),Ok(1634731));
     }
+    #[test] fn gitram_missing_tamper_replay_are_held() {
+        let mut source=vec![b' ';RECORDS*RECORD_SIZE];
+        for (i,row) in source.chunks_exact_mut(RECORD_SIZE).enumerate() {
+            row[0]=(i%26) as u8+b'A';
+            row[120]=b'\n';
+        }
+        let folder=std::env::temp_dir().join(format!("asolaria-seat1-clippy-{}",std::process::id()));
+        std::fs::create_dir_all(&folder).expect("test dir");
+        for i in [0usize,1] { write_cell(&folder,i,&source).unwrap(); }
+        assert!(read_cell(&folder,0,&source).is_ok());
+        assert!(read_cell(&folder,2,&source).is_err()); // absent shard cannot be sealed
+        let a=folder.join("cell-00.bin");
+        let original=std::fs::read(&a).unwrap();
+        let mut corrupted=original.clone();corrupted[0]^=1;
+        std::fs::write(&a,&corrupted).unwrap();
+        assert!(read_cell(&folder,0,&source).is_err()); // tampered raw source
+        std::fs::write(&a,original).unwrap();
+        assert!(read_cell(&folder,0,&source).is_ok());
+        let b=folder.join("cell-01.hbp");
+        let original_hbp=std::fs::read(&b).unwrap();
+        std::fs::copy(folder.join("cell-00.hbp"),&b).unwrap();
+        assert!(read_cell(&folder,1,&source).is_err()); // replayed wrong cell
+        std::fs::write(&b,original_hbp).unwrap();
+        let hbi=folder.join("cell-01.hbi");
+        std::fs::remove_file(&hbi).unwrap();
+        assert!(read_cell(&folder,1,&source).is_err()); // missing 3078-byte seed
+        std::fs::remove_dir_all(folder).unwrap();
+    }
     #[test] fn no_loss_seed_3078(){
         let data=(0..81u8).collect::<Vec<_>>();
         let receipt=seed(&data);
