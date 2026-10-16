@@ -37,7 +37,7 @@ jobs:
           grep -Fq 'crate-type = ["rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
           # Upstream standalone no_std panic handler must not conflict with std executable.
           grep -Fq '#[cfg(not(test))]' upstream/crates/asolaria-tribit/src/lib.rs
-          sed -i 's/^#\[cfg(not(test))\]$/#[cfg(all(not(test), target_arch = "wasm32"))]/' upstream/crates/asolaria-tribit/src/lib.rs
+          sed -i 's/#\[cfg(not(test))\]/#[cfg(all(not(test), target_arch = "wasm32"))]/' upstream/crates/asolaria-tribit/src/lib.rs
           grep -Fq '#[cfg(all(not(test), target_arch = "wasm32"))]' upstream/crates/asolaria-tribit/src/lib.rs
       - name: Rust 1.81 exact and Clippy mandatory
         run: |
@@ -94,7 +94,7 @@ jobs:
           grep -Fq 'crate-type = ["rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
           # Upstream standalone no_std panic handler must not conflict with std executable.
           grep -Fq '#[cfg(not(test))]' upstream/crates/asolaria-tribit/src/lib.rs
-          sed -i 's/^#\[cfg(not(test))\]$/#[cfg(all(not(test), target_arch = "wasm32"))]/' upstream/crates/asolaria-tribit/src/lib.rs
+          sed -i 's/#\[cfg(not(test))\]/#[cfg(all(not(test), target_arch = "wasm32"))]/' upstream/crates/asolaria-tribit/src/lib.rs
           grep -Fq '#[cfg(all(not(test), target_arch = "wasm32"))]' upstream/crates/asolaria-tribit/src/lib.rs
       - name: Require compiler and Rust Clippy test gate
         run: |
