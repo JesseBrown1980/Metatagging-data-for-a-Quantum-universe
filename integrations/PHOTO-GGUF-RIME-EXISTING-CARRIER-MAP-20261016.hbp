@@ -1,0 +1,16 @@
+HBP1|schema=ASOLARIA-SEAT1-EXISTING-MEDIA-RIME-CARRIER-V1|date=2026-10-16|json=0
+CORRECTION|operator=JesseBrown1980|photo_ingest=EXISTING_COLOUR_QR|gguf_ingest=EXISTING_DOUBLE_RAINBOW_COLOR_STATE|rime_sphere=EXISTING_OPERATOR_LAW|build_new_fits_ingest=NO|model_training=NO|json=0
+SOURCE|name=COLOUR_QR|repo=JesseBrown1980/the-colour-qr|commit=1938a9b076b8fc3e81d0a271ca05e84a0e938854|path=index.html|mode=BIDIRECTIONAL_FILE_CAMERA_QR|json=0
+CONTRACT|carrier=COLOUR_QR|channel_count=3|symbols=STANDARD_QR_IN_RGB_PLANES|chunk_bytes=2100|index=UINT32_LE|payload=BASE64|decoder=EXISTING_REUSE|input_source_sha256=REQUIRED|json=0
+DATA|name=JWST_CEERS_F277W|source_bytes=65536|carrier=COLOUR_QR|source_readback=REPORTED_EXACT|note=EXISTING_PUBLISHED_QR_RECEIPT|json=0
+SOURCE|name=FOLLOW_THE_IS|repo=JesseBrown1980/FOLLOW-THE-IS-NOT-THE-WILL-AND-WAS|commit=8712368c851abe347ddf97a25bfbd96275d4316c|path=codes/double_rainbow_to_gguf.py|schema=ASOLARIA-DOUBLE-RAINBOW-COLOR-STATE-V1|json=0
+CONTRACT|carrier=GGUF|artifact=colors/DOUBLE-RAINBOW-OIL-3174.gguf|descriptor_frames=64|descriptor_fields=18|gguf_bytes=3174|source_video_bytes_embedded=0|reconstructs_source_video=0|no_loss_claim=FALSE|json=0
+VALIDATOR|repo=JesseBrown1980/FOLLOW-THE-IS-NOT-THE-WILL-AND-WAS|commit=8712368c851abe347ddf97a25bfbd96275d4316c|path=codes/verify_double_rainbow_gguf.py|sidecar_sha=REQUIRED|json=0
+SOURCE|name=RIME_SPHERE_LAW|repo=JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills|commit=3f9f42dab6247c40b30921b253e3f73c9e942ca5|path=books/LAW-COLOR-QR-2D-DEVICE-ENGINE.md|json=0
+LAW|carrier=COLOUR_QR_2D|dimensions=2|bidirectional=1|separate_addresses=WAS_IS_WILL|rime_sphere_bidirectional=0|source_identity_exchange=0|json=0
+LAW|carrier=RIME|repo=JesseBrown1980/FOLLOW-THE-IS-NOT-THE-WILL-AND-WAS|path=knowledge/BOOK-OF-LIFE-OIL-SPHERICAL-RIME.md|meaning=RELATIONAL_SPHERICAL_ADDRESSES|not_automatic_3D_MEASUREMENT=TRUE|json=0
+RUNTIME|repo=JesseBrown1980/Metatagging-data-for-a-Quantum-universe|branch=agent/asolaria-constellation-qprism-gitram-20261016|rust=1.81.0|clippy_deny_warnings=1|float_used=0|json_output=0|json=0
+BIND|existing_photo_carrier=COLOUR_QR|existing_descriptor_carrier=GGUF|keep_original_source_bytes=TRUE|native_Asolaria_seed=HBI|metadata=HBP|storage=GitRAM|addressing=BALANCED_TERNARY|json=0
+GATE|photo_rv_from_proxima=NOT_EXCHANGEABLE|raw_FITS_ingestor=NOT_DEPLOYED|GGUF_descriptor_ne_source_pixels=TRUE|calibrated_7_spectral_bands=NOT_PRESENT|physical_photon_memory=NOT_TESTED_BY_THIS_LANE|json=0
+GATE|full_image_to_RIME_to_GITRAM_end_to_end=NOT_REVALIDATED_BY_THIS_CORRECTION|existing_raw_source_hash_check=REQUIRED|no_new_encoder_or_decoder=TRUE|json=0
+END|action=REUSE_EXISTING_CARRIERS|duplicate_new_proxima_images_rs=REMOVED_FROM_DRAFT|pr_state=DRAFT_UNMERGED|json=0
