@@ -11,6 +11,46 @@ concurrency:
   group: asolaria-gitram-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  rust_kernel:
+    name: Pinned upstream Rust 1.81 Asolaria constellation
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve pinned original Asolaria Rust kernel (source, not substitutes)
+        run: |
+          git clone --depth=1 --no-checkout --filter=blob:none \
+            https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills.git upstream
+          git -C upstream sparse-checkout set crates/asolaria-tribit
+          git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          test "$(git -C upstream rev-parse HEAD)" = '3f9f42dab6247c40b30921b253e3f73c9e942ca5'
+      - name: Use exact operator Rust 1.81 Clippy toolchain
+        run: |
+          rustup toolchain install 1.81.0 --profile minimal --component clippy
+          rustc +1.81.0 --version
+          cargo +1.81.0 clippy --manifest-path upstream/crates/asolaria-tribit/Cargo.toml --all-targets -- -D warnings
+          cargo +1.81.0 test --manifest-path upstream/crates/asolaria-tribit/Cargo.toml
+      - name: Kernel seed of exact 722-row observed Proxima source
+        run: |
+          curl --fail --location --retry 3 --retry-delay 2 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' --output spec.dat
+          echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
+          cargo +1.81.0 run --release --manifest-path upstream/crates/asolaria-tribit/Cargo.toml \
+            --bin asolaria-seed-file -- spec.dat ASOLARIA-3078.hbp | tee rust-seed.log
+          test "$(wc -c < ASOLARIA-3078.hbp)" -eq 3078
+          grep -q 'SEEDFILE|input_bytes=87362|input_sha256=027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474|seed_bytes=3078' rust-seed.log
+          sha256sum ASOLARIA-3078.hbp > ASOLARIA-3078.hbp.sha256
+      - name: Preserve executable physical-host kernel receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asolaria-rust81-source-seed
+          path: |
+            ASOLARIA-3078.hbp
+            ASOLARIA-3078.hbp.sha256
+            rust-seed.log
+          if-no-files-found: error
+          retention-days: 14
   cell:
     name: GitRAM cell ${{ matrix.cell }}
     runs-on: ubuntu-latest
@@ -44,7 +84,7 @@ jobs:
           retention-days: 14
   fanin:
     name: Verify nine cells and seal one Omega
-    needs: [cell]
+    needs: [cell, rust_kernel]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -61,6 +101,17 @@ jobs:
           pattern: asolaria-cell-*
           path: ram/
           merge-multiple: true
+      - name: Required compiled-Rust constellation kernel gate
+        run: test "${{ needs.rust_kernel.result }}" = 'success'
+      - uses: actions/download-artifact@v4
+        with:
+          name: asolaria-rust81-source-seed
+          path: rust/
+      - name: Verify original Rust seed artifact and exact input binding
+        run: |
+          test "$(wc -c < rust/ASOLARIA-3078.hbp)" -eq 3078
+          grep -q 'SEEDFILE|input_bytes=87362|input_sha256=027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474|seed_bytes=3078' rust/rust-seed.log
+          (cd rust && sha256sum -c ASOLARIA-3078.hbp.sha256)
       - name: No partial or duplicate seal
         run: |
           test "$(find ram -type f -name 'cell-*.hbp' | wc -l)" -eq 9
