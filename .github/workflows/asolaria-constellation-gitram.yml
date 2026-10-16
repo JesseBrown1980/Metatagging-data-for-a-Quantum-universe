@@ -63,13 +63,18 @@ jobs:
           merge-multiple: true
       - name: No partial or duplicate seal
         run: |
-          test "$(find ram -maxdepth 1 -type f -name 'cell-*.hbp' | wc -l)" -eq 9
+          test "$(find ram -type f -name 'cell-*.hbp' | wc -l)" -eq 9
+          mkdir -p flat
           for i in 0 1 2 3 4 5 6 7 8; do
-            test -f "$(printf 'ram/cell-%02d.hbp' "$i")"
+            name="$(printf 'cell-%02d.hbp' "$i")"
+            source="$(find ram -type f -name "$name" -print -quit)"
+            test -n "$source"
+            cp "$source" "flat/$name"
           done
+          test "$(find flat -maxdepth 1 -type f -name 'cell-*.hbp' | wc -l)" -eq 9
       - name: Stream-read nine checkpoints and verify digital Omega
         run: |
-          python3 integrations/constellation_gitram.py --source spec.dat --out result --fanin --cells-dir ram | tee fanin.log
+          python3 integrations/constellation_gitram.py --source spec.dat --out result --fanin --cells-dir flat | tee fanin.log
           grep -q 'GITRAM_OMEGA_PASS' fanin.log
           grep -q 'd11121b8143ad25f3e00972a9c28e89b4923b5a8f817477a0aaed56e6b6e9c66' fanin.log
       - name: Upload byte-exact fan-in receipt
