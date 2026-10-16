@@ -30,6 +30,11 @@ jobs:
           git -C upstream sparse-checkout set crates/asolaria-tribit
           git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
           test "$(git -C upstream rev-parse HEAD)" = 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          # Native hosted executable consumes the original no_std crate as RLIB only.
+          # The upstream WASM/cdylib packaging remains unchanged in GitHub.
+          grep -Fq 'crate-type = ["cdylib", "rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
+          sed -i 's/crate-type = \["cdylib", "rlib"\]/crate-type = ["rlib"]/' upstream/crates/asolaria-tribit/Cargo.toml
+          grep -Fq 'crate-type = ["rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
       - name: Rust 1.81 exact and Clippy mandatory
         run: |
           rustup toolchain install 1.81.0 --profile minimal --component clippy
@@ -78,6 +83,11 @@ jobs:
           git -C upstream sparse-checkout set crates/asolaria-tribit
           git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
           test "$(git -C upstream rev-parse HEAD)" = 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          # Native hosted executable consumes the original no_std crate as RLIB only.
+          # The upstream WASM/cdylib packaging remains unchanged in GitHub.
+          grep -Fq 'crate-type = ["cdylib", "rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
+          sed -i 's/crate-type = \["cdylib", "rlib"\]/crate-type = ["rlib"]/' upstream/crates/asolaria-tribit/Cargo.toml
+          grep -Fq 'crate-type = ["rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
       - name: Require compiler and Rust Clippy test gate
         run: |
           rustup toolchain install 1.81.0 --profile minimal --component clippy
