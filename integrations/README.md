@@ -1,56 +1,39 @@
-# Asolaria Meta Tagging → Q-PRISM → Constellation → GitRAM
+# Seat 1 · Meta Tagging → Q-PRISM → Rust 1.81 Ternary Constellation → GitRAM
 
-**Scope:** source-bound software computation, not an optical photon-memory measurement or quantum hardware experiment. Preserves the 2024 metatag → 2026 Asolaria lineage.
+**Verified scope:** Rust 1.81 **native software** on separate GitHub Actions runners, integer only, Clippy warnings treated as errors. The entire active program emits HBP/HBI and original source bytes. **No JSON in the execution path.**
 
-## Original components reused by contract
+## The original modules reused
 
-- This repository's original metatag/particle addressing, versioned per-particle memory and interaction gate (metatag_v2_behcs.py).
-- [Asolaria Universe Simulator combined laws](https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills/blob/main/books/COMBINED-BOOK-OF-LAWS.md): freeze/source, ternary R³, honest controls, HRM/MTP/Fischer and lighthouse return.
-- [Q-PRISM cube absorption](https://github.com/JesseBrown1980/Q-PRISM-human-organoid-neural-stream-as-a-high-dimensional-control/blob/acer/qprism-muscle-sim-2026-07-01/qprism/cube_absorb.py): byte-exact 256 ↔ 1024 bit-packing, Host8 FNV1a64 IDs, Brown-Hilbert 1024-ary selectors. **This adapter implements integer-only representation functions; it does not invoke the separate Talbot–Lau optical apparatus model.**
-- [The Colour QR](https://github.com/JesseBrown1980/the-colour-qr/blob/main/README.md): three separately indexed and independently decoded standard QR symbols in red/green/blue planes. The container-generated companion artifact carries the exact source receipt. Seven rainbow velocity-display classes are *not measured seven-band light spectra*.
-- [GitRAM doctrine](https://github.com/JesseBrown1980/GitRAM/blob/main/docs/GITRAM-DOCTRINE.md): one unit per isolated cell, independent checkpoint artifacts, all-nine fan-in and no partial seal.
-- [Rotating lighthouse Rust 1.81 source](https://github.com/JesseBrown1980/asolaria-rotating-lighthouse-2026-10-09/blob/main/kernel/lighthouse.rs): order-3 ternary digital rotation and five-station hose. The Rust kernel is a separate upstream artifact. **This branch contains a Python data/transport adapter, not a newly compiled Rust lighthouse binary**; Rust 1.81 Clippy gate remains pending.
+- [Asolaria full Universe Simulator laws](https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills/blob/main/books/COMBINED-BOOK-OF-LAWS.md): source-frozen ternary/rime geometry, digital three-rotation loop, time-slice provenance, and strict claim gates.
+- [Original Asolaria Rust 1.81 integer ternary kernel](https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills/tree/3f9f42dab6247c40b30921b253e3f73c9e942ca5/crates/asolaria-tribit): linked as native Rust crate, not replaced with Python arithmetic. Uses original `Zero::rotate`, `sha256`, `seed`, `verify_chain`, and 3,078-byte kernel receipts.
+- [Q-PRISM source](https://github.com/JesseBrown1980/Q-PRISM-human-organoid-neural-stream-as-a-high-dimensional-control/blob/acer/qprism-muscle-sim-2026-07-01/qprism/cube_absorb.py): reproduce exact byte ↔ 1024-glyph integer bit-packing, Host8 FNV-1a64 and six-digit base-1024 selectors. The separate neural Talbot–Lau apparatus and float-based optimization harness are **not** executed.
+- [GitRAM doctrine](https://github.com/JesseBrown1980/GitRAM/blob/main/docs/GITRAM-DOCTRINE.md): nine isolated Rust cells, each emitting `cell-NN.hbp` metadata, `cell-NN.hbi` original Asolaria seed and `cell-NN.bin` preserved source bytes. The final container re-reads the three files from all nine cells, refuses missing/wrong/replayed artifacts and constructs exactly one Omega.
+- [Colour QR source](https://github.com/JesseBrown1980/the-colour-qr/blob/main/README.md): unchanged original three ordinary QR symbols in the red, green and blue image planes. A previous local demonstration reconstructed its source receipt, but **this Rust GitRAM lane does not yet generate optical QR images or measured seven-band spectra**.
 
-## Frozen real astronomical input
+## Strict operator toolchain and source
 
-CDS J/A+A/700/A11/spec.dat (Suárez Mascareño et al., A&A 700 A11, 2025). Exactly 722 measured Proxima Centauri RV records with date, uncertainty and telescope instrument index.
+- `integrations/seat1-rust/rust-toolchain.toml`: Rust `1.81.0` with `clippy`.
+- `cargo +1.81.0 clippy --all-targets --offline -- -D warnings`.
+- `cargo +1.81.0 test --offline`: includes independent missing-cell, tamper, replay, seeded-input and Q-PRISM/ternary cycle falsifiers.
+- Never `f32`/`f64` and never a JSON checkpoint or report. `json=0` is an HBP evidence-field, **not** a JSON payload.
+- Public real observational source: 722 radial-velocity records, CDS J/A+A/700/A11 `spec.dat`.
+- Original source SHA256: `027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474`.
+- Nine source-contiguous cells × 27-address Merkle leaves = 243 digital leaves. The separate chronological time-window analysis does not claim nine genuine lighthouse photographs.
+- Original three-state rotations `R³=identity`; every individual dated RV observation can retain its own source address.
+- Q-PRISM 256 ↔ 1024 format roundtrip reconstructs original bytes exactly; no information-theoretic compression or optical claim.
 
-- Source SHA256: 027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474.
-- Each of 9 GitRAM cells stores a compressed, byte-exact consecutive fraction of this published source. The nine *actual time-sorted observation windows* in the local report are a **separate** grouping.
-- The 3×3×3 Merkle leaves within each cell are digital address slots and may be empty; they are not simulated physical particles.
+**Build-boundary clarification:** The original upstream crate is pinned to commit `3f9f42d`. In the GitHub **native runner only**, the build adapts its Cargo target from WASM `cdylib+rlib` to native `rlib` and scopes its standalone `no_std` panic handler to `wasm32`, preventing duplicate `panic_impl` in a normal Linux executable. It does not alter the original upstream source on GitHub, or change ternary/sha/seed algorithms. Independent native tests are mandatory. The standalone upstream `cdylib` full Clippy gate requires a separate WASM target or a targeted upstream patch; do not confuse the downstream binary's passing Clippy with complete upstream cdylib verification.
 
-## Local invocation — Python stdlib only
+## Result and provenance
 
-    curl -fL 'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' -o spec.dat
-    echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
-    python3 integrations/constellation_gitram.py --source spec.dat --out output
+[GitHub Actions: 9/9 Rust GitRAM cells + exact Omega fan-in, PASS 10/10](https://github.com/JesseBrown1980/Metatagging-data-for-a-Quantum-universe/actions/runs/38907576559).
 
-GitRAM cells individually, then exact fan-in:
+Omega `d11121b8143ad25f3e00972a9c28e89b4923b5a8f817477a0aaed56e6b6e9c66`.
 
-    for cell in 0 1 2 3 4 5 6 7 8; do
-        python3 integrations/constellation_gitram.py --source spec.dat --out checkpoints --cell "$cell"
-    done
-    python3 integrations/constellation_gitram.py --source spec.dat --out result --fanin --cells-dir checkpoints
+The fan-in re-verifies all original instrument source bytes, the nine `.hbp` roots, the nine 3,078-byte `.hbi` native seeds, Q-PRISM reversibility and the original ternary three-rotation operator. GitHub Actions artifacts and digital readback constitute hosted CPU measurements; GitHub-hosted containers are not proof of independent physical-host custody.
 
-The public PR workflow schedules nine separate standard GitHub-hosted Ubuntu cells, uploads one HBP checkpoint per cell, requires all nine at fan-in, and verifies source SHA-256, source byte parity, 256↔1024 Q-PRISM exactness and ternary R³. Only actual concluded GitHub checks certify the remote run; the local pass is not a substitute.
+## Release boundary and unfinished stages
 
-## Local container baseline — 2026-10-16
+This is a functioning **Rust constellation memory/checkpoint layer** using the original Asolaria ternary kernel. It is not yet the complete HRM/MTP/Fischer/GNN learning cascade, Winding Lighthouse optical measurement, an interoperable Rainbow7 physical QR scanner, Q-PRISM biological stream, or a new-planet detector. Each has its own independent instrumentation and replay gates. The earlier Python adapter and JSON results remain only in **Git history** as superseded work, not on the active review branch.
 
-| Check | Outcome |
-|---|---|
-| Published RV rows | 722 / 722, exact SHA |
-| Independent GitRAM-style cell processes | 9 / 9 PASS |
-| Total digitally addressed leaves | 243 |
-| Byte-exact recovered source | PASS |
-| Q-PRISM bit-packing 256↔1024 | PASS |
-| Three ternary rotations and inverse | PASS |
-| Missing, replayed, tampered cells | HELD, HELD, HELD |
-| Separate local pytest suite | 7 / 7 PASS |
-| Local three-channel Colour QR receipt | 1067 / 1067 bytes decoded, matching SHA |
-| Omega | d11121b8143ad25f3e00972a9c28e89b4923b5a8f817477a0aaed56e6b6e9c66 |
-
-## Scientific and release boundaries
-
-Software checks on a powered CPU are real physical computations, but do not independently establish historical photon storage, optical instrument custody, quantum advantage, AI awareness, new astronomical objects or a seven-band physical spectrometer. This implementation uses measured radial velocities and integer software colour classes. Q-PRISM optical apparatus verification, full Rust 1.81/Clippy compilation and original calibrated optical observations are distinct gates.
-
-**Draft PR only. No auto-merge, paid execution, physics-claim promotion, credentials or hardware actuation.** Missing source, wrong SHA, duplicate/missing checkpoint, failed inverse or unexpected Omega must fail closed.
+**No merge, no unattended watcher, no hardware actuation, no new astronomical/quantum/biological claim.**
