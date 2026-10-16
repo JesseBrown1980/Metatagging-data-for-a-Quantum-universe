@@ -61,6 +61,21 @@ def audit():
             if raw[:2]==b"\x1f\x8b":
                 import gzip
                 raw=gzip.decompress(raw)
+            if not raw.startswith(b"SIMPLE  "):
+                # Legacy plate-finder may now emit HTML; request native STScI
+                # single-survey FITS instead and verify REGION against index.
+                survey_url="https://archive.stsci.edu/cgi-bin/dss_search?"
+                variant={"25":"dss1","060Z":"quickv","A1AG":"poss2ukstu_red",
+                         "A29M":"poss2ukstu_red"}[identifier]
+                fallback=urllib.parse.urlencode({
+                    "r":"14 29 42.94","d":"-62 40 46.16","e":"J2000",
+                    "h":"10.0","w":"10.0","v":variant,
+                    "f":"fits","c":"none"
+                })
+                raw,final,mime=get(survey_url+fallback)
+                if raw[:2]==b"\x1f\x8b":
+                    import gzip
+                    raw=gzip.decompress(raw)
             hd=fits_metadata(raw)
             region=plate["Region"].upper()
             found=str(hd.get("REGION","")).upper()
