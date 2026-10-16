@@ -24,18 +24,6 @@ fn hex(source: &[u8]) -> String {
     out
 }
 fn digest(src: &[u8]) -> String { hex(&sha256(src)) }
-fn hash_parts(a: &[u8], b: &[u8]) -> String {
-    let mut data = Vec::with_capacity(a.len() + b.len());
-    data.extend_from_slice(a);
-    data.extend_from_slice(b);
-    digest(&data)
-}
-fn put_parts(parts: &[&[u8]]) -> String {
-    let len = parts.iter().map(|x|x.len()).sum();
-    let mut data = Vec::with_capacity(len);
-    for item in parts { data.extend_from_slice(item); }
-    digest(&data)
-}
 fn get_number(v: &[u8]) -> Result<i64, String> {
     let s = std::str::from_utf8(v).map_err(|e| e.to_string())?.trim();
     if s.is_empty() { return Err("empty fixed decimal".into()); }
