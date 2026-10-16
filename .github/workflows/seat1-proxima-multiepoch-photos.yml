@@ -1,0 +1,38 @@
+name: Seat1 four-epoch Proxima source-photo verification
+on:
+  pull_request:
+    paths:
+      - 'integrations/epoch_observations/**'
+      - '.github/workflows/seat1-proxima-multiepoch-photos.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dated-real-photo-source-intake:
+    name: Archive photos 1996 and 2012 Hubble plus dated DSS plates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install astronomy reader, not a trainable model
+        run: python3 -m pip install --disable-pip-version-check astropy astroquery
+      - name: Fetch immutable original rendered photos and archival FITS cutouts
+        run: |
+          set -euo pipefail
+          export ASOLARIA_EPOCH_DIR="$PWD/epoch_outputs"
+          python3 integrations/epoch_observations/collect_proxima_epochs.py | tee camera-epoch.log
+          grep -q 'THREE_OR_MORE_DATED_PROXIMA_FRAMES_AVAILABLE' camera-epoch.log
+          grep -q 'training=NONE' epoch_outputs/PHOTO-EPOCHS.hbp
+          (cd epoch_outputs && sha256sum -- * > SHA256SUMS.txt)
+      - name: Preserve camera bytes, HBP time-band receipts, and failure logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asolaria-proxima-dated-original-image-sources
+          path: |
+            epoch_outputs/*
+            camera-epoch.log
+          if-no-files-found: warn
+          retention-days: 14
