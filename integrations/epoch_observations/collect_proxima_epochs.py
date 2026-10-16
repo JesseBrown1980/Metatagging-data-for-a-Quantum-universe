@@ -121,6 +121,10 @@ def main():
         print(row.strip())
     (OUT/"PHOTO-EPOCHS.hbp").write_text("".join(rows))
     observed=[row for row in rows if row.startswith("EPOCH|") and "state=HELD" not in row and "HELD_UNDATED_PLATE" not in row]
+    plate_manifest=OUT/"DSS-SOURCE-PLATES.hbp"
+    plate_rows=plate_manifest.read_text().splitlines() if plate_manifest.exists() else []
+    dated_plate_rows=[row for row in plate_rows if row.startswith("PLATE|") and "status=SOURCE_VERIFIED" in row]
+    observed.extend(dated_plate_rows)
     if len(observed)<3:
         raise RuntimeError(f"ONLY_{len(observed)}_VERIFIED_DATED_IMAGE_SOURCES__THREE_REQUIRED")
     print("THREE_OR_MORE_DATED_PROXIMA_FRAMES_AVAILABLE",len(observed))
