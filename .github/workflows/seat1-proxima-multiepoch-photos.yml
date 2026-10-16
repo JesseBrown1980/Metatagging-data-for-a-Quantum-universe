@@ -29,6 +29,11 @@ jobs:
           export ASOLARIA_EPOCH_DIR="$PWD/epoch_outputs"
           python3 integrations/epoch_observations/collect_proxima_epochs.py | tee camera-epoch.log
           grep -q 'THREE_OR_MORE_DATED_PROXIMA_FRAMES_AVAILABLE' camera-epoch.log
+          python3 integrations/epoch_observations/measure_plate_motion.py \
+            --source epoch_outputs --out epoch_outputs/PHOTO-MOTION.hbp | tee measured-motion.log
+          grep -q 'REAL_PROXIMA_IMAGE_MOTION_PASS' measured-motion.log
+          grep -q 'new_planet=NOT_DETECTED' epoch_outputs/PHOTO-MOTION.hbp
+          grep -q 'wrong_plate_id=HELD' epoch_outputs/PHOTO-MOTION.hbp
           grep -q 'training=NONE' epoch_outputs/PHOTO-EPOCHS.hbp
           (cd epoch_outputs && sha256sum -- * > SHA256SUMS.txt)
       - name: Preserve camera bytes, HBP time-band receipts, and failure logs
@@ -41,5 +46,6 @@ jobs:
             camera-epoch.log
             plate-dates.log
             direct-plates.log
+            measured-motion.log
           if-no-files-found: warn
           retention-days: 14
