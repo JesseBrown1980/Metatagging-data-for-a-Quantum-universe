@@ -75,12 +75,12 @@ def fits_epoch(header)->str:
 
 def dss_survey(label:str,survey:str)->str:
     from astroquery.skyview import SkyView
-    from astropy.io import fits
+    from astropy import units as u
     # Original survey cutout. Fits headers and non-resampled original pixel
     # bit patterns are retained; library output may contain reprojection.
     SkyView.TIMEOUT=120
     sky=SkyView.get_images(position="Proxima Centauri",survey=[survey],
-                           coordinates="J2000",pixels=384,radius=0.12)
+                           coordinates="J2000",pixels=384,radius=0.12*u.deg)
     if not sky:raise ValueError("NO_DSS_IMAGE_FOR_"+survey)
     hdu=sky[0][0]
     header=hdu.header
