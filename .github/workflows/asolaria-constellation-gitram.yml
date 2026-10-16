@@ -1,0 +1,158 @@
+name: Asolaria Seat1 Rust81 Ternary Q-PRISM GitRAM
+on:
+  pull_request:
+    paths:
+      - 'integrations/**'
+      - '.github/workflows/asolaria-constellation-gitram.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: asolaria-seat1-rust81-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  cell:
+    name: Rust 1.81 GitRAM cell ${{ matrix.cell }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Pin original Asolaria integer ternary kernel source
+        run: |
+          git clone --depth=1 --no-checkout --filter=blob:none \
+            https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills.git upstream
+          git -C upstream sparse-checkout set crates/asolaria-tribit
+          git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          test "$(git -C upstream rev-parse HEAD)" = 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          # Native hosted executable consumes the original no_std crate as RLIB only.
+          # The upstream WASM/cdylib packaging remains unchanged in GitHub.
+          grep -Fq 'crate-type = ["cdylib", "rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
+          sed -i 's/crate-type = \["cdylib", "rlib"\]/crate-type = ["rlib"]/' upstream/crates/asolaria-tribit/Cargo.toml
+          grep -Fq 'crate-type = ["rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
+          # Upstream standalone no_std panic handler must not conflict with std executable.
+          grep -Fq '#[cfg(not(test))]' upstream/crates/asolaria-tribit/src/lib.rs
+          sed -i 's/#\[cfg(not(test))\]/#[cfg(all(not(test), target_arch = "wasm32"))]/' upstream/crates/asolaria-tribit/src/lib.rs
+          grep -Fq '#[cfg(all(not(test), target_arch = "wasm32"))]' upstream/crates/asolaria-tribit/src/lib.rs
+      - name: Rust 1.81 exact and Clippy mandatory
+        run: |
+          rustup toolchain install 1.81.0 --profile minimal --component clippy
+          rustc +1.81.0 --version | grep '^rustc 1.81.0'
+          cargo +1.81.0 clippy --manifest-path integrations/seat1-rust/Cargo.toml --all-targets --offline -- -D warnings
+          cargo +1.81.0 test --manifest-path integrations/seat1-rust/Cargo.toml --offline
+      - name: Acquire SHA-pinned published 722 original instrument records
+        run: |
+          curl --fail --location --retry 3 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' --output spec.dat
+          echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
+      - name: Process this original Rust/ternary HBP HBI GitRAM RAM cell
+        run: |
+          cargo +1.81.0 run --release --offline --manifest-path integrations/seat1-rust/Cargo.toml \
+            -- --source spec.dat --out checkpoint --cell ${{ matrix.cell }} | tee cell.log
+          grep -q 'GITRAM_SHARD_PASS|json=0' cell.log
+          test "$(find checkpoint -type f -name 'cell-*.hbp' | wc -l)" -eq 1
+          test "$(find checkpoint -type f -name 'cell-*.hbi' | wc -l)" -eq 1
+          test "$(find checkpoint -type f -name 'cell-*.bin' | wc -l)" -eq 1
+      - name: Preserve this self-contained GitRAM RAM cell
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asolaria-rust81-cell-${{ matrix.cell }}
+          path: |
+            checkpoint/cell-*.hbp
+            checkpoint/cell-*.hbi
+            checkpoint/cell-*.bin
+            cell.log
+          if-no-files-found: error
+          retention-days: 14
+  fanin:
+    name: Rust 1.81 original-kernel all-nine Omega
+    needs: [cell]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Pin same original Rust 1.81 upstream sources
+        run: |
+          git clone --depth=1 --no-checkout --filter=blob:none \
+            https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills.git upstream
+          git -C upstream sparse-checkout set crates/asolaria-tribit
+          git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          test "$(git -C upstream rev-parse HEAD)" = 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          # Native hosted executable consumes the original no_std crate as RLIB only.
+          # The upstream WASM/cdylib packaging remains unchanged in GitHub.
+          grep -Fq 'crate-type = ["cdylib", "rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
+          sed -i 's/crate-type = \["cdylib", "rlib"\]/crate-type = ["rlib"]/' upstream/crates/asolaria-tribit/Cargo.toml
+          grep -Fq 'crate-type = ["rlib"]' upstream/crates/asolaria-tribit/Cargo.toml
+          # Upstream standalone no_std panic handler must not conflict with std executable.
+          grep -Fq '#[cfg(not(test))]' upstream/crates/asolaria-tribit/src/lib.rs
+          sed -i 's/#\[cfg(not(test))\]/#[cfg(all(not(test), target_arch = "wasm32"))]/' upstream/crates/asolaria-tribit/src/lib.rs
+          grep -Fq '#[cfg(all(not(test), target_arch = "wasm32"))]' upstream/crates/asolaria-tribit/src/lib.rs
+      - name: Require compiler and Rust Clippy test gate
+        run: |
+          rustup toolchain install 1.81.0 --profile minimal --component clippy
+          cargo +1.81.0 clippy --offline --manifest-path integrations/seat1-rust/Cargo.toml --all-targets -- -D warnings
+          cargo +1.81.0 test --offline --manifest-path integrations/seat1-rust/Cargo.toml
+      - name: Acquire same published scientific source
+        run: |
+          curl --fail --location --retry 3 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' --output spec.dat
+          echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: asolaria-rust81-cell-*
+          path: ram/
+          merge-multiple: true
+      - name: Hold absent, extra, corrupt or replayed GitRAM cells
+        run: |
+          for suffix in hbp hbi bin; do
+            test "$(find ram -type f -name "cell-*.$suffix" | wc -l)" -eq 9
+          done
+          mkdir -p flat
+          for i in 0 1 2 3 4 5 6 7 8; do
+            for suffix in hbp hbi bin; do
+              name="$(printf 'cell-%02d.%s' "$i" "$suffix")"
+              source="$(find ram -type f -name "$name" -print -quit)"
+              test -n "$source"
+              cp "$source" "flat/$name"
+            done
+          done
+      - name: Reconstruct actual 722 original rows through pinned Rust 1.81 kernel
+        run: |
+          cargo +1.81.0 run --release --offline --manifest-path integrations/seat1-rust/Cargo.toml \
+            -- --source spec.dat --out seal --fanin --cells-dir flat | tee fanin.log
+          grep -q 'GITRAM_OMEGA_PASS|json=0|cells=9' fanin.log
+          grep -q 'd11121b8143ad25f3e00972a9c28e89b4923b5a8f817477a0aaed56e6b6e9c66' fanin.log
+          grep -q 'native_tribit=1' seal/GITRAM-OMEGA.hbp
+          grep -q 'qprism_rtt=PASS' seal/GITRAM-OMEGA.hbp
+          ! grep -ri -E '"[{[]|json=1|float_used=1' seal/ flat/*.hbp
+          sha256sum seal/GITRAM-OMEGA.hbp > seal/GITRAM-OMEGA.sha256
+      - name: Bound Sgr A* and full Milky Way potential with original integer ternary kernel
+        run: |
+          cargo +1.81.0 run --release --offline --manifest-path integrations/seat1-rust/Cargo.toml \
+            --bin galactic_frame -- seal/GALACTIC-CONTEXT.hbp | tee galactic-context.log
+          grep -q 'galactic_center=SGR_A_STAR' seal/GALACTIC-CONTEXT.hbp
+          grep -q 'matrix_skip_only_when_TRANSITION_LAW_VALID' seal/GALACTIC-CONTEXT.hbp
+          grep -q 'float_used=0' seal/GALACTIC-CONTEXT.hbp
+          grep -q 'new_planet_detected=NO' seal/GALACTIC-CONTEXT.hbp
+      - name: Preserve no-JSON native Omega HBP stone
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asolaria-rust81-omega-seal
+          path: |
+            seal/GITRAM-OMEGA.hbp
+            seal/GITRAM-OMEGA.sha256
+            seal/GALACTIC-CONTEXT.hbp
+            fanin.log
+            galactic-context.log
+          if-no-files-found: error
+          retention-days: 14
