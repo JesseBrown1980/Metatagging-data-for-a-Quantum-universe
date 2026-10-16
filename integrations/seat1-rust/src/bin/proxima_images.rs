@@ -146,9 +146,10 @@ fn run()->Result<(),String>{
    material.extend_from_slice(&prior);
    material.extend_from_slice(tag.as_bytes());
    material.extend_from_slice(&sha256(&image.raw));
+   let previous_hex=hex(&prior);
    prior=sha256(&material);
    observation_receipts.push_str(&format!("IMAGE_LINK|json=0|idx={i}|tag={tag}|source_sha256={}|previous_hash_sha256={}|linked_checkpoint_sha256={}\n",
-      image.source_sha,digest(&material[..material.len()-32-image.raw.len().min(0)]),hex(&prior)));
+      image.source_sha,previous_hex,hex(&prior)));
    aggregate.extend_from_slice(&sha256(&image.raw));
    println!("ASOLARIA_IMAGE_PASS|json=0|image={tag}|pixels={}|sample_bytes={}|source_sha256={}|native_kernel=PASS|R3=PASS",image.width*image.height,image.image.len(),image.source_sha);
  }
