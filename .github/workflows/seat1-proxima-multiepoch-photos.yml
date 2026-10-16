@@ -18,6 +18,8 @@ jobs:
           persist-credentials: false
       - name: Install astronomy reader, not a trainable model
         run: python3 -m pip install --disable-pip-version-check astropy astroquery
+      - name: Independently inspect original survey plate capture dates
+        run: python3 integrations/epoch_observations/plate_date_audit.py | tee plate-dates.log
       - name: Fetch immutable original rendered photos and archival FITS cutouts
         run: |
           set -euo pipefail
@@ -34,5 +36,6 @@ jobs:
           path: |
             epoch_outputs/*
             camera-epoch.log
+            plate-dates.log
           if-no-files-found: warn
           retention-days: 14
