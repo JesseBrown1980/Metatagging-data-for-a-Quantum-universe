@@ -1,4 +1,4 @@
-name: Asolaria Q-PRISM GitRAM nine-cell constellation
+name: Asolaria Seat1 Rust81 Ternary Q-PRISM GitRAM
 on:
   pull_request:
     paths:
@@ -8,133 +8,123 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: asolaria-gitram-${{ github.ref }}
+  group: asolaria-seat1-rust81-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  rust_kernel:
-    name: Pinned upstream Rust 1.81 Asolaria constellation
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-      - name: Retrieve pinned original Asolaria Rust kernel (source, not substitutes)
-        run: |
-          git clone --depth=1 --no-checkout --filter=blob:none \
-            https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills.git upstream
-          git -C upstream sparse-checkout set crates/asolaria-tribit
-          git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
-          test "$(git -C upstream rev-parse HEAD)" = '3f9f42dab6247c40b30921b253e3f73c9e942ca5'
-      - name: Use exact operator Rust 1.81 Clippy toolchain
-        run: |
-          rustup toolchain install 1.81.0 --profile minimal --component clippy
-          rustc +1.81.0 --version
-          cargo +1.81.0 clippy --manifest-path upstream/crates/asolaria-tribit/Cargo.toml --all-targets -- -D warnings
-          cargo +1.81.0 test --manifest-path upstream/crates/asolaria-tribit/Cargo.toml
-      - name: Kernel seed of exact 722-row observed Proxima source
-        run: |
-          curl --fail --location --retry 3 --retry-delay 2 \
-            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' --output spec.dat
-          echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
-          cargo +1.81.0 run --release --manifest-path upstream/crates/asolaria-tribit/Cargo.toml \
-            --bin asolaria-seed-file -- spec.dat ASOLARIA-3078.hbp | tee rust-seed.log
-          test "$(wc -c < ASOLARIA-3078.hbp)" -eq 3078
-          grep -q 'SEEDFILE|input_bytes=87362|input_sha256=027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474|seed_bytes=3078' rust-seed.log
-          sha256sum ASOLARIA-3078.hbp > ASOLARIA-3078.hbp.sha256
-      - name: Preserve executable physical-host kernel receipts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: asolaria-rust81-source-seed
-          path: |
-            ASOLARIA-3078.hbp
-            ASOLARIA-3078.hbp.sha256
-            rust-seed.log
-          if-no-files-found: error
-          retention-days: 14
   cell:
-    name: GitRAM cell ${{ matrix.cell }}
+    name: Rust 1.81 GitRAM cell ${{ matrix.cell }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         cell: [0, 1, 2, 3, 4, 5, 6, 7, 8]
     steps:
       - uses: actions/checkout@v4
-      - name: Retrieve independently published Proxima spectrum
+        with:
+          persist-credentials: false
+      - name: Pin original Asolaria integer ternary kernel source
         run: |
-          curl --fail --location --retry 3 --retry-delay 2 \
-            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' \
-            --output spec.dat
+          git clone --depth=1 --no-checkout --filter=blob:none \
+            https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills.git upstream
+          git -C upstream sparse-checkout set crates/asolaria-tribit
+          git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          test "$(git -C upstream rev-parse HEAD)" = 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+      - name: Rust 1.81 exact and Clippy mandatory
+        run: |
+          rustup toolchain install 1.81.0 --profile minimal --component clippy
+          rustc +1.81.0 --version | grep '^rustc 1.81.0'
+          cargo +1.81.0 clippy --manifest-path integrations/seat1-rust/Cargo.toml --all-targets --offline -- -D warnings
+          cargo +1.81.0 test --manifest-path integrations/seat1-rust/Cargo.toml --offline
+      - name: Acquire SHA-pinned published 722 original instrument records
+        run: |
+          curl --fail --location --retry 3 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' --output spec.dat
           echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
-      - name: Build exactly one verified checkpoint (stdlib integer-only)
+      - name: Process this original Rust/ternary HBP HBI GitRAM RAM cell
         run: |
-          python3 integrations/constellation_gitram.py --source spec.dat --out checkpoint --cell ${{ matrix.cell }} | tee cell.log
-          grep -q 'GITRAM_SHARD_PASS' cell.log
+          cargo +1.81.0 run --release --offline --manifest-path integrations/seat1-rust/Cargo.toml \
+            -- --source spec.dat --out checkpoint --cell ${{ matrix.cell }} | tee cell.log
+          grep -q 'GITRAM_SHARD_PASS|json=0' cell.log
           test "$(find checkpoint -type f -name 'cell-*.hbp' | wc -l)" -eq 1
-      - name: Upload independent GitRAM RAM cell
+          test "$(find checkpoint -type f -name 'cell-*.hbi' | wc -l)" -eq 1
+          test "$(find checkpoint -type f -name 'cell-*.bin' | wc -l)" -eq 1
+      - name: Preserve this self-contained GitRAM RAM cell
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: asolaria-cell-${{ matrix.cell }}
+          name: asolaria-rust81-cell-${{ matrix.cell }}
           path: |
             checkpoint/cell-*.hbp
+            checkpoint/cell-*.hbi
+            checkpoint/cell-*.bin
             cell.log
           if-no-files-found: error
           retention-days: 14
   fanin:
-    name: Verify nine cells and seal one Omega
-    needs: [cell, rust_kernel]
+    name: Rust 1.81 original-kernel all-nine Omega
+    needs: [cell]
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch frozen source and check exact bytes
+        with:
+          persist-credentials: false
+      - name: Pin same original Rust 1.81 upstream sources
         run: |
-          curl --fail --location --retry 3 --retry-delay 2 \
-            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' \
-            --output spec.dat
+          git clone --depth=1 --no-checkout --filter=blob:none \
+            https://github.com/JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills.git upstream
+          git -C upstream sparse-checkout set crates/asolaria-tribit
+          git -C upstream checkout 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+          test "$(git -C upstream rev-parse HEAD)" = 3f9f42dab6247c40b30921b253e3f73c9e942ca5
+      - name: Require compiler and Rust Clippy test gate
+        run: |
+          rustup toolchain install 1.81.0 --profile minimal --component clippy
+          cargo +1.81.0 clippy --offline --manifest-path integrations/seat1-rust/Cargo.toml --all-targets -- -D warnings
+          cargo +1.81.0 test --offline --manifest-path integrations/seat1-rust/Cargo.toml
+      - name: Acquire same published scientific source
+        run: |
+          curl --fail --location --retry 3 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' --output spec.dat
           echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
       - uses: actions/download-artifact@v4
         with:
-          pattern: asolaria-cell-*
+          pattern: asolaria-rust81-cell-*
           path: ram/
           merge-multiple: true
-      - name: Required compiled-Rust constellation kernel gate
-        run: test "${{ needs.rust_kernel.result }}" = 'success'
-      - uses: actions/download-artifact@v4
-        with:
-          name: asolaria-rust81-source-seed
-          path: rust/
-      - name: Verify original Rust seed artifact and exact input binding
+      - name: Hold absent, extra, corrupt or replayed GitRAM cells
         run: |
-          test "$(wc -c < rust/ASOLARIA-3078.hbp)" -eq 3078
-          grep -q 'SEEDFILE|input_bytes=87362|input_sha256=027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474|seed_bytes=3078' rust/rust-seed.log
-          (cd rust && sha256sum -c ASOLARIA-3078.hbp.sha256)
-      - name: No partial or duplicate seal
-        run: |
-          test "$(find ram -type f -name 'cell-*.hbp' | wc -l)" -eq 9
+          for suffix in hbp hbi bin; do
+            test "$(find ram -type f -name "cell-*.$suffix" | wc -l)" -eq 9
+          done
           mkdir -p flat
           for i in 0 1 2 3 4 5 6 7 8; do
-            name="$(printf 'cell-%02d.hbp' "$i")"
-            source="$(find ram -type f -name "$name" -print -quit)"
-            test -n "$source"
-            cp "$source" "flat/$name"
+            for suffix in hbp hbi bin; do
+              name="$(printf 'cell-%02d.%s' "$i" "$suffix")"
+              source="$(find ram -type f -name "$name" -print -quit)"
+              test -n "$source"
+              cp "$source" "flat/$name"
+            done
           done
-          test "$(find flat -maxdepth 1 -type f -name 'cell-*.hbp' | wc -l)" -eq 9
-      - name: Stream-read nine checkpoints and verify digital Omega
+      - name: Reconstruct actual 722 original rows through pinned Rust 1.81 kernel
         run: |
-          python3 integrations/constellation_gitram.py --source spec.dat --out result --fanin --cells-dir flat | tee fanin.log
-          grep -q 'GITRAM_OMEGA_PASS' fanin.log
+          cargo +1.81.0 run --release --offline --manifest-path integrations/seat1-rust/Cargo.toml \
+            -- --source spec.dat --out seal --fanin --cells-dir flat | tee fanin.log
+          grep -q 'GITRAM_OMEGA_PASS|json=0|cells=9' fanin.log
           grep -q 'd11121b8143ad25f3e00972a9c28e89b4923b5a8f817477a0aaed56e6b6e9c66' fanin.log
-      - name: Upload byte-exact fan-in receipt
+          grep -q 'native_tribit=1' seal/GITRAM-OMEGA.hbp
+          grep -q 'qprism_rtt=PASS' seal/GITRAM-OMEGA.hbp
+          ! grep -ri -E '"[{[]|json=1|float_used=1' seal/ flat/*.hbp
+          sha256sum seal/GITRAM-OMEGA.hbp > seal/GITRAM-OMEGA.sha256
+      - name: Preserve no-JSON native Omega HBP stone
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: asolaria-gitram-omega-receipt
+          name: asolaria-rust81-omega-seal
           path: |
-            result/GITRAM-OMEGA.hbp
+            seal/GITRAM-OMEGA.hbp
+            seal/GITRAM-OMEGA.sha256
             fanin.log
           if-no-files-found: error
           retention-days: 14
