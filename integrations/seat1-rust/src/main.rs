@@ -307,7 +307,7 @@ mod tests {
         }
     }
     #[test] fn qprism_round_trip_all_byte_patterns(){
-        for n in [0,1,2,3,4,5,9,27,81,256,3200] {
+        for n in [0usize,1,2,3,4,5,9,27,81,256,3200] {
             let data=(0..n).map(|x|(x%256) as u8).collect::<Vec<_>>();
             assert_eq!(qprism_test(&data),Ok((n*8).div_ceil(10)));
         }
