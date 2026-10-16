@@ -92,6 +92,14 @@ def run(root,out):
     for source,(raw,*_) in zip(SOURCES,frames):
         tampered=bytearray(raw);tampered[2880]^=1
         if sha(tampered)==source[1]:raise ValueError("FISCHER_MUTATION_WAS_NOT_HELD")
+        forged=list(source)
+        forged[2]="FORGED_ID"
+        try:
+            plate(root,forged)
+        except ValueError:
+            pass
+        else:
+            raise ValueError("FISCHER_FORGED_PLATE_WAS_ACCEPTED")
     lines=["HBP1|schema=ASOLARIA-SEAT1-REAL-PROXIMA-IMAGE-MOTION-V1|json=0|date=2026-10-16|trained=NO|source=REAL_PLATE_PIXELS\n"]
     for source,(_,h,frame),point in zip(SOURCES,frames,chosen):
         w,height,_=frame
@@ -101,7 +109,7 @@ def run(root,out):
     for radius,e,n,v in radius_rows:
         lines.append(f"CONTROL|json=0|aperture_radius_px={radius}|east_delta_arcsec={e:.6f}|north_delta_arcsec={n:.6f}|separation_arcsec={v:.6f}\n")
     lines.append(f"MOTION|json=0|baseline_years=21|delta_east_arcsec={de:.6f}|delta_north_arcsec={dn:.6f}|total_arcsec={norm:.6f}|rate_arcsec_per_year={norm/21:.6f}|catalog_predicted_east_arcsec={pm_e:.6f}|catalog_predicted_north_arcsec={pm_n:.6f}|difference_to_catalog_arcsec={residual:.6f}|known_star=PROXIMA_CENTAURI\n")
-    lines.append("FISCHER|json=0|corrupted_fits=HELD|wrong_plate_id=PREDECLARED|reversed_date=HELD|five_aperture_radii=PASS|source_hash_verified=PASS\n")
+    lines.append("FISCHER|json=0|corrupted_fits=HELD|wrong_plate_id=HELD|reversed_date=HELD|five_aperture_radii=PASS|source_hash_verified=PASS\n")
     lines.append("BOUNDARY|json=0|source_image_rv_not_interchangeable=TRUE|physical_star_proper_motion=OBSERVED|new_planet=NOT_DETECTED|image_zoom_generates_new_photons=FALSE|camera_filters_identical=FALSE|trained_model=NONE\n")
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text("".join(lines))
