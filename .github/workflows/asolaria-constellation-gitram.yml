@@ -1,0 +1,84 @@
+name: Asolaria Q-PRISM GitRAM nine-cell constellation
+on:
+  pull_request:
+    paths:
+      - 'integrations/**'
+      - '.github/workflows/asolaria-constellation-gitram.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: asolaria-gitram-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  cell:
+    name: GitRAM cell ${{ matrix.cell }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve independently published Proxima spectrum
+        run: |
+          curl --fail --location --retry 3 --retry-delay 2 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' \
+            --output spec.dat
+          echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
+      - name: Build exactly one verified checkpoint (stdlib integer-only)
+        run: |
+          python3 integrations/constellation_gitram.py --source spec.dat --out checkpoint --cell ${{ matrix.cell }} | tee cell.log
+          grep -q 'GITRAM_SHARD_PASS' cell.log
+          test "$(find checkpoint -type f -name 'cell-*.hbp' | wc -l)" -eq 1
+      - name: Upload independent GitRAM RAM cell
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asolaria-cell-${{ matrix.cell }}
+          path: |
+            checkpoint/cell-*.hbp
+            cell.log
+          if-no-files-found: error
+          retention-days: 14
+  fanin:
+    name: Verify nine cells and seal one Omega
+    needs: [cell]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch frozen source and check exact bytes
+        run: |
+          curl --fail --location --retry 3 --retry-delay 2 \
+            'https://cdsarc.cds.unistra.fr/ftp/J/A+A/700/A11/spec.dat' \
+            --output spec.dat
+          echo '027cff5c10b541608b727abada2af531037223edec3bb9112fcbb45fc333e474  spec.dat' | sha256sum -c -
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: asolaria-cell-*
+          path: ram/
+          merge-multiple: true
+      - name: No partial or duplicate seal
+        run: |
+          test "$(find ram -maxdepth 1 -type f -name 'cell-*.hbp' | wc -l)" -eq 9
+          for i in 0 1 2 3 4 5 6 7 8; do
+            test -f "$(printf 'ram/cell-%02d.hbp' "$i")"
+          done
+      - name: Stream-read nine checkpoints and verify digital Omega
+        run: |
+          python3 integrations/constellation_gitram.py --source spec.dat --out result --fanin --cells-dir ram | tee fanin.log
+          grep -q 'GITRAM_OMEGA_PASS' fanin.log
+          grep -q 'd11121b8143ad25f3e00972a9c28e89b4923b5a8f817477a0aaed56e6b6e9c66' fanin.log
+      - name: Upload byte-exact fan-in receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asolaria-gitram-omega-receipt
+          path: |
+            result/GITRAM-OMEGA.hbp
+            fanin.log
+          if-no-files-found: error
+          retention-days: 14
