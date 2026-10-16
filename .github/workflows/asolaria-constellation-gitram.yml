@@ -135,6 +135,14 @@ jobs:
           grep -q 'qprism_rtt=PASS' seal/GITRAM-OMEGA.hbp
           ! grep -ri -E '"[{[]|json=1|float_used=1' seal/ flat/*.hbp
           sha256sum seal/GITRAM-OMEGA.hbp > seal/GITRAM-OMEGA.sha256
+      - name: Bound Sgr A* and full Milky Way potential with original integer ternary kernel
+        run: |
+          cargo +1.81.0 run --release --offline --manifest-path integrations/seat1-rust/Cargo.toml \
+            --bin galactic_frame -- seal/GALACTIC-CONTEXT.hbp | tee galactic-context.log
+          grep -q 'galactic_center=SGR_A_STAR' seal/GALACTIC-CONTEXT.hbp
+          grep -q 'matrix_skip_only_when_TRANSITION_LAW_VALID' seal/GALACTIC-CONTEXT.hbp
+          grep -q 'float_used=0' seal/GALACTIC-CONTEXT.hbp
+          grep -q 'new_planet_detected=NO' seal/GALACTIC-CONTEXT.hbp
       - name: Preserve no-JSON native Omega HBP stone
         if: always()
         uses: actions/upload-artifact@v4
@@ -143,6 +151,8 @@ jobs:
           path: |
             seal/GITRAM-OMEGA.hbp
             seal/GITRAM-OMEGA.sha256
+            seal/GALACTIC-CONTEXT.hbp
             fanin.log
+            galactic-context.log
           if-no-files-found: error
           retention-days: 14
