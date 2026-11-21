@@ -4,6 +4,20 @@
 
 This repository explores metadata-driven frameworks for conceptualizing and interacting with quantum phenomena. Drawing inspiration from both classical 3D vector space tagging and advanced quantum theories, this project aims to bridge the gap between physics, computation, and metadata engineering.
 
+## Exact finite frame and gauge reference (21 November 2026)
+
+The [Frame Matrix V1](frame_matrix_exact.py) engine assigns stable particle IDs, canonical pixel records and SHA-256 frame commitments. Its [specification](docs/FRAME-MATRIX-EXACT-V1.md) and tests verify deterministic finite transitions and their exact inverse.
+
+The [Frame Operator and Gauge V2](frame_operator_gauge_exact.py) extension proves the exact 729-state one-particle transition cycle counts, canonical pixel/metatag reconstruction, a four-link Z2 gauge-projector example, and exact Wilson moments for a separately chosen positive two-state transfer. Its [mathematical scope](docs/FRAME-OPERATOR-GAUGE-V1.md), [pre-implementation predictions](docs/FRAME-OPERATOR-GAUGE-V1-PREDICTION.hbp) and [replay receipt](docs/FRAME-OPERATOR-GAUGE-V1-RECEIPT.hbp) are public.
+
+Run the verification with:
+
+    python3 -B -m unittest discover -s tests -p test_frame_matrix_exact.py -v
+    python3 -B -m unittest discover -s tests -p test_frame_operator_gauge_exact.py -v
+    python3 -B frame_operator_gauge_exact.py
+
+These tests establish finite computational identities in their specified models. The physical four-dimensional SU(2) Wilson transfer, continuum reconstruction and mass gap retain separate OPEN proof requirements.
+
 ---
 
 #### 🚀 Key Features
