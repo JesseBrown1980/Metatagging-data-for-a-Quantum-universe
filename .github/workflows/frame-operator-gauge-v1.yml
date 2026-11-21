@@ -1,0 +1,67 @@
+name: Frame operator and exact gauge Wilson V1
+on:
+  pull_request:
+    paths:
+      - frame_operator_gauge_exact.py
+      - tests/test_frame_operator_gauge_exact.py
+      - docs/FRAME-OPERATOR-GAUGE-V1-PREDICTION.hbp
+      - docs/FRAME-OPERATOR-GAUGE-V1.md
+      - .github/workflows/frame-operator-gauge-v1.yml
+  push:
+    paths:
+      - frame_operator_gauge_exact.py
+      - tests/test_frame_operator_gauge_exact.py
+      - docs/FRAME-OPERATOR-GAUGE-V1-PREDICTION.hbp
+      - docs/FRAME-OPERATOR-GAUGE-V1.md
+      - .github/workflows/frame-operator-gauge-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-projection-spectrum-and-wilson:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify prediction frozen before implementation
+        run: |
+          set -euo pipefail
+          PIN=47e70e0f52273b108e44321bb7e4b8a074fc20fd
+          git merge-base --is-ancestor "$PIN" HEAD
+          git show "$PIN:docs/FRAME-OPERATOR-GAUGE-V1-PREDICTION.hbp" | grep -Fq 'FROZEN_BEFORE_IMPLEMENTATION_AND_TESTS'
+          if git cat-file -e "$PIN:frame_operator_gauge_exact.py" 2>/dev/null; then
+            echo 'operator already present at prediction freeze' >&2
+            exit 1
+          fi
+          if git cat-file -e "$PIN:tests/test_frame_operator_gauge_exact.py" 2>/dev/null; then
+            echo 'operator tests already present at prediction freeze' >&2
+            exit 1
+          fi
+      - name: Exact 3D frame, pixel and gauge/transfer tests
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest discover -s tests -p test_frame_operator_gauge_exact.py -v
+      - name: Deterministic receipt and negative physical transfer control
+        run: |
+          set -euo pipefail
+          mkdir -p build/frame-operator-gauge-v1
+          python3 -B frame_operator_gauge_exact.py > build/frame-operator-gauge-v1/FIRST.hbp
+          python3 -B frame_operator_gauge_exact.py > build/frame-operator-gauge-v1/REPLAY.hbp
+          cmp build/frame-operator-gauge-v1/FIRST.hbp build/frame-operator-gauge-v1/REPLAY.hbp
+          grep -Fq 'cycles_fixed=27|cycles_length3=234|trace1=27|trace2=27|trace3=729' build/frame-operator-gauge-v1/FIRST.hbp
+          grep -Fq 'C0=1|C1=1/2|C2=1/4|C4=1/16|window_q1over4_n2_lower=1/5' build/frame-operator-gauge-v1/FIRST.hbp
+          grep -Fq 'frame_operator_quadratic=-1|frame_OS_positive=REJECTED' build/frame-operator-gauge-v1/FIRST.hbp
+          grep -Fq 'original_SU2_Wilson=NOT_TESTED|continuum_mass_gap=OPEN|json=0' build/frame-operator-gauge-v1/FIRST.hbp
+          sha256sum build/frame-operator-gauge-v1/FIRST.hbp > build/frame-operator-gauge-v1/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-frame-operator-gauge-wilson-v1
+          path: build/frame-operator-gauge-v1/
+          retention-days: 90
+          if-no-files-found: warn
