@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - frame_operator_gauge_exact.py
+      - README.md
       - tests/test_frame_operator_gauge_exact.py
       - docs/FRAME-OPERATOR-GAUGE-V1-PREDICTION.hbp
       - docs/FRAME-OPERATOR-GAUGE-V1-RECEIPT.hbp
@@ -11,6 +12,7 @@ on:
   push:
     paths:
       - frame_operator_gauge_exact.py
+      - README.md
       - tests/test_frame_operator_gauge_exact.py
       - docs/FRAME-OPERATOR-GAUGE-V1-PREDICTION.hbp
       - docs/FRAME-OPERATOR-GAUGE-V1-RECEIPT.hbp
