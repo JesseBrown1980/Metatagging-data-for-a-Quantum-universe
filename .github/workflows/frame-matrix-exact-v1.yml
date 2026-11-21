@@ -1,0 +1,56 @@
+name: Exact metatag frame matrix v1
+on:
+  pull_request:
+    paths:
+      - frame_matrix_exact.py
+      - tests/test_frame_matrix_exact.py
+      - docs/FRAME-MATRIX-V1-PREDICTION.hbp
+      - docs/FRAME-MATRIX-EXACT-V1.md
+      - .github/workflows/frame-matrix-exact-v1.yml
+  push:
+    paths:
+      - frame_matrix_exact.py
+      - tests/test_frame_matrix_exact.py
+      - docs/FRAME-MATRIX-V1-PREDICTION.hbp
+      - docs/FRAME-MATRIX-EXACT-V1.md
+      - .github/workflows/frame-matrix-exact-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-frame-and-pixel-acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Frozen prediction provenance
+        run: |
+          set -euo pipefail
+          grep -Fq '|phase=FROZEN_BEFORE_TESTS|' docs/FRAME-MATRIX-V1-PREDICTION.hbp
+          grep -Fq '|frame1_collision_velocity_exchange=YES|' docs/FRAME-MATRIX-V1-PREDICTION.hbp
+      - name: Exact reversible-state and negative-control tests
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest discover -s tests -p test_frame_matrix_exact.py -v
+      - name: Canonical HBP transcript and replay determinism
+        run: |
+          set -euo pipefail
+          mkdir -p build/frame-matrix-v1
+          python3 -B frame_matrix_exact.py > build/frame-matrix-v1/FRAME-MATRIX.hbp
+          python3 -B frame_matrix_exact.py > build/frame-matrix-v1/REPLAY.hbp
+          cmp build/frame-matrix-v1/FRAME-MATRIX.hbp build/frame-matrix-v1/REPLAY.hbp
+          grep -Fq 'PIXEL|n=1|xyz=2,2,2|uids=P1,P2|json=0' build/frame-matrix-v1/FRAME-MATRIX.hbp
+          grep -Fq 'FRAME_MATRIX_VERDICT|exact_replay=PASS|inverse=PASS' build/frame-matrix-v1/FRAME-MATRIX.hbp
+          grep -Fq '|physical_quantum_claim=NOT_TESTED|json=0' build/frame-matrix-v1/FRAME-MATRIX.hbp
+          sha256sum build/frame-matrix-v1/FRAME-MATRIX.hbp > build/frame-matrix-v1/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-metatag-frame-matrix-v1
+          path: build/frame-matrix-v1/
+          retention-days: 90
+          if-no-files-found: warn

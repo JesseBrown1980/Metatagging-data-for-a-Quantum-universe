@@ -1,0 +1,8 @@
+PREDICTION|id=FRAME-MATRIX-V1|phase=FROZEN_BEFORE_TESTS|source=2024_metatag_plus_2026_hash_address|json=0
+PREDICTION|genesis_particles=3|energy_total=12|momentum_total=0,1,0|L_tag_total=0,1,0|spin_total=0|json=0
+PREDICTION|frame1_P1_xyz=2,2,2|frame1_P2_xyz=2,2,2|frame1_collision_velocity_exchange=YES|json=0
+PREDICTION|frame1_P3_xyz=4,0,4|frame2_P1_xyz=1,2,2|frame2_P2_xyz=3,2,2|json=0
+PREDICTION|frame_chain_hashes=SHA256_CANONICAL_BYTES|backward_replay=EXACT_WITH_PARENT|json=0
+PREDICTION|reciprocal_bond=REQUIRED|stable_uid_ACROSS_FRAMES=YES|state_sha_CHANGES_ON_MOTION=YES|json=0
+PREDICTION|adversarial_bond_mismatch=REJECT|duplicate_uid=REJECT|bad_ternary=REJECT|tampered_frame=REJECT|noncanonical=REJECT|json=0
+SCOPE|mathematics=FINITE_INTEGER_MODEL|physical_quantum_entanglement=NOT_TESTED|Yang_Mills_mass_gap=NOT_TESTED|json=0
