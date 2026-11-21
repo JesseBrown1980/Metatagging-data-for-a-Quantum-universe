@@ -30,7 +30,9 @@ def restore_frame(view):
     header += "|parent=" + parent + "|json=0\n"
     raw = (header + "".join(tag + "\n" for tag in tags)).encode("ascii")
     frame = parse_frame(raw)
-    need(occupied(frame) == dict(pixels), "pixel_projection_mismatch")
+    expected_pixels = tuple((xyz, ids) for xyz, ids in occupied(frame).items())
+    need(type(pixels) is tuple and pixels == expected_pixels,
+         "pixel_projection_mismatch")
     need(frame.digest() == commitment, "frame_commitment_mismatch")
     return frame
 
