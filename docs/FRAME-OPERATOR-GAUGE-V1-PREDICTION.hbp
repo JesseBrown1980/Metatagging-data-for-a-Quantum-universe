@@ -1,0 +1,11 @@
+PREDICTION|id=FRAME-OPERATOR-GAUGE-V1|phase=FROZEN_BEFORE_IMPLEMENTATION_AND_TESTS|date=2026-11-21|json=0
+PREDICTION|pixel_projection=LOSSLESS_WITH_CANONICAL_METATAG_TABLE_AND_FRAME_SHA|orphan_tag=REJECT|tampered_pixel=REJECT|json=0
+PREDICTION|one_particle_grid_side=3|positions=27|ternary_velocities=27|total_states=729|json=0
+PREDICTION|fixed_cycles=27|length3_cycles=234|total_cycles=261|trace_T1=27|trace_T2=27|trace_T3=729|json=0
+PREDICTION|charpoly=(x-1)^27_(x^3-1)^234|spectral_modulus=1|positive_selfadjoint_transfer=REJECT|json=0
+PREDICTION|z2_plaquette=4_oriented_edges|raw_link_assignments=16|gauge_transforms=16|orbits=2|orbit_cardinality=8|json=0
+PREDICTION|gauge_projection_scaled8_squared=8_times_scaled8|wilson_values=-1,+1|gauge_invariance=PASS|json=0
+PREDICTION|toy_kernel=3,1;1,3|lambda_vacuum=4|lambda_excited=2|positive_kernel=PASS|json=0
+PREDICTION|connected_wilson_C0=1|C1=1/2|C2=1/4|C4=1/16|window_q1over4_n2_lower=1/5|json=0
+PREDICTION|frame_rotation_nonpositive_quadratic_witness=-1|naive_frame_gauge_tensor_OS_transfer=REJECT|json=0
+SCOPE|raw_frame_operator=FINITE_PERMUTATION|z2_operator=CHOSEN_POSITIVE_TOY_KERNEL|original_SU2_Wilson_transfer=NOT_TESTED|Clay_mass_gap=OPEN|json=0
