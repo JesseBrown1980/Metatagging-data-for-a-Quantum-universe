@@ -1,0 +1,5 @@
+FRAME_OPERATOR|side=3|states=729|cycles_fixed=27|cycles_length3=234|trace1=27|trace2=27|trace3=729|json=0
+GAUGE_Z2|edges=4|raw=16|gauge_actions=16|orbits=2|orbit_sizes=8,8|P8_squared=8P8|Wilson_gauge_invariant=PASS|json=0
+TOY_TRANSFER|K=3,1;1,3|vacuum_eigenvalue=4|excited_eigenvalue=2|physical_quotient=2|json=0
+TOY_WILSON|C0=1|C1=1/2|C2=1/4|C4=1/16|window_q1over4_n2_lower=1/5|json=0
+BOUNDARY|frame_operator_quadratic=-1|frame_OS_positive=REJECTED|original_SU2_Wilson=NOT_TESTED|continuum_mass_gap=OPEN|json=0
