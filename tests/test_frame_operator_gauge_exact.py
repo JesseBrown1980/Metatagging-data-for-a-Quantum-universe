@@ -28,6 +28,15 @@ class FrameOperatorGaugeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "pixel_projection_mismatch"):
             restore_frame(bad)
 
+    def test_duplicate_and_permuted_pixel_rows_rejected(self):
+        v = project_frame(fixture())
+        duplicate = v[:4] + (v[4] + (v[4][-1],), v[5])
+        with self.assertRaisesRegex(ValueError, "pixel_projection_mismatch"):
+            restore_frame(duplicate)
+        permuted = v[:4] + (tuple(reversed(v[4])), v[5])
+        with self.assertRaisesRegex(ValueError, "pixel_projection_mismatch"):
+            restore_frame(permuted)
+
     def test_pixel_relabel_rejected(self):
         v = project_frame(fixture())
         cells = list(v[4])
